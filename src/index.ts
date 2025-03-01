@@ -15,6 +15,7 @@ app.use(cors())
 
 app.get('/getAddyStuffs', (req: Request, res: Response) => {
     const addy = req.query.addy as string;
+    console.log(addy);
     getBalances(addy).then(data => {
             let json = JSON.stringify(Object.fromEntries(data));
 	    console.log(json);

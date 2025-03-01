@@ -18,15 +18,15 @@ import { OneCoinNineDecimals, suiClient } from "./index";
 export async function getBalances(addy: string): Promise<Map<string, number>>{
         let mapOfAmounts: Map<string, number> = new Map();
         // if(currentAccount){
-            console.log("gggg");
+            console.log("Getting balances");
           suiClient.getBalance({ owner: addy }).then((res) => {
-            console.log(res.totalBalance);
+  //          console.log(res.totalBalance);
             const b = Math.floor((parseInt(res.totalBalance)/OneCoinNineDecimals)*10000)/10000;
             mapOfAmounts.set("Sui", b);
           });
           mapOfCoinTypes.forEach((val, key) => {
           suiClient.getBalance({ owner: addy, coinType: val }).then((res) => {
-            console.log(res.totalBalance);
+    //        console.log(res.totalBalance);
             const b = Math.floor((parseInt(res.totalBalance)/OneCoinNineDecimals)*10000)/10000;
             if(b > 0){
                 mapOfAmounts.set(key, b);
@@ -37,29 +37,29 @@ export async function getBalances(addy: string): Promise<Map<string, number>>{
         let lastCursor: string | undefined | null = null;
         let hasCursor = true;
         while(hasCursor){
-            console.log(nfts);
+      //      console.log(nfts);
             let someObjs: any = await suiClient.getOwnedObjects({
                 owner: addy,
                 cursor: lastCursor,
             });
-            console.log(someObjs);
-            console.log(someObjs.data[1].data.type)
+         //   console.log(someObjs);
+        //    console.log(someObjs.data[1].data.type)
             nfts.push(...someObjs.data);
             lastCursor = someObjs.nextCursor;
             hasCursor = someObjs.hasNextPage;
         }
-        console.log(nfts);
-        console.log(mapOfAmounts);
+       // console.log(nfts);
+       // console.log(mapOfAmounts);
         for (const obj of nfts) {
-            console.log(obj);
+         //   console.log(obj);
             const objectDetails = await suiClient.getObject({
               id: obj.data?.objectId!,
               options: { showType: true },
             });
             const objectType = objectDetails.data?.type;
             mapOfNFTTypes.forEach((val, key) => {
-                console.log(val);
-                console.log(objectType);
+           //     console.log(val);
+             //   console.log(objectType);
             if (objectType === val) {
                 mapOfAmounts.set(key, (mapOfAmounts.has(key) ? mapOfAmounts.get(key)! : 0)+1);
             }
